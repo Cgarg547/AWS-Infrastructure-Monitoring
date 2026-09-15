@@ -1,0 +1,64 @@
+groups:
+  - name: infrastructure-recording-rules
+    interval: 30s
+
+    rules:
+
+      - record: instance:cpu_usage_percent
+        expr: |
+          100 - (
+            avg by (instance) (
+              rate(node_cpu_seconds_total{
+                job="node-exporter",
+                mode="idle"
+              }[5m])
+            ) * 100
+          )
+
+      - record: instance:memory_usage_percent
+        expr: |
+          100 * (
+            1 - (
+              node_memory_MemAvailable_bytes{
+                job="node-exporter"
+              }
+              /
+              node_memory_MemTotal_bytes{
+                job="node-exporter"
+              }
+            )
+          )
+
+      - record: instance:disk_usage_percent
+        expr: |
+          100 * (
+            1 - (
+              node_filesystem_avail_bytes{
+                job="node-exporter",
+                fstype!~"tmpfs|overlay",
+                mountpoint!~"/proc.*|/sys.*|/dev.*"
+              }
+              /
+              node_filesystem_size_bytes{
+                job="node-exporter",
+                fstype!~"tmpfs|overlay",
+                mountpoint!~"/proc.*|/sys.*|/dev.*"
+              }
+            )
+          )
+
+      - record: instance:network_receive_bytes_per_second
+        expr: |
+          sum by (instance) (
+            rate(node_network_receive_bytes_total{
+              job="node-exporter"
+            }[5m])
+          )
+
+      - record: instance:network_transmit_bytes_per_second
+        expr: |
+          sum by (instance) (
+            rate(node_network_transmit_bytes_total{
+              job="node-exporter"
+            }[5m])
+          )

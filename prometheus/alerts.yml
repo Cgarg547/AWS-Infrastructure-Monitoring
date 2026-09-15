@@ -1,0 +1,82 @@
+groups:
+  - name: infrastructure-alerts
+    rules:
+
+      - alert: InstanceDown
+        expr: up{job="node-exporter"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Node Exporter is down"
+          description: "Node Exporter on {{ $labels.instance }} has been unavailable for more than 1 minute."
+
+      - alert: PrometheusDown
+        expr: up{job="prometheus"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Prometheus is down"
+          description: "Prometheus has been unavailable for more than 1 minute."
+
+      - alert: HighCPUUsage
+        expr: |
+          100 - (
+            avg by (instance) (
+              rate(node_cpu_seconds_total{
+                job="node-exporter",
+                mode="idle"
+              }[5m])
+            ) * 100
+          ) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage"
+          description: "CPU usage on {{ $labels.instance }} has been above 80% for more than 5 minutes."
+
+      - alert: HighMemoryUsage
+        expr: |
+          100 * (
+            1 - (
+              node_memory_MemAvailable_bytes{
+                job="node-exporter"
+              }
+              /
+              node_memory_MemTotal_bytes{
+                job="node-exporter"
+              }
+            )
+          ) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage on {{ $labels.instance }} has been above 80% for more than 5 minutes."
+
+      - alert: HighDiskUsage
+        expr: |
+          100 * (
+            1 - (
+              node_filesystem_avail_bytes{
+                job="node-exporter",
+                fstype!~"tmpfs|overlay",
+                mountpoint!~"/proc.*|/sys.*|/dev.*"
+              }
+              /
+              node_filesystem_size_bytes{
+                job="node-exporter",
+                fstype!~"tmpfs|overlay",
+                mountpoint!~"/proc.*|/sys.*|/dev.*"
+              }
+            )
+          ) > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High disk usage"
+          description: "Disk usage on {{ $labels.instance }} at {{ $labels.mountpoint }} has been above 85% for more than 5 minutes."
