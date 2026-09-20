@@ -28,6 +28,198 @@
       },
       "fieldConfig": {
         "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "DOWN"
+                },
+                "1": {
+                  "text": "UP"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "up{job=\"node-exporter\"}",
+          "refId": "A"
+        }
+      ],
+      "title": "Node Exporter Status",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "DOWN"
+                },
+                "1": {
+                  "text": "UP"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "up{job=\"prometheus\"}",
+          "refId": "A"
+        }
+      ],
+      "title": "Prometheus Status",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "count(ALERTS{alertstate=\"firing\"}) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Active Alerts",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
           "unit": "percent",
           "min": 0,
           "max": 100
@@ -38,7 +230,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 4
       },
       "id": 1,
       "options": {
@@ -74,7 +266,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 4
       },
       "id": 2,
       "options": {
@@ -110,7 +302,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 12
       },
       "id": 3,
       "options": {
@@ -121,8 +313,8 @@
       },
       "targets": [
         {
-          "expr": "100 * (1 - (node_filesystem_avail_bytes{job=\"node-exporter\",fstype!~\"tmpfs|overlay\",mountpoint!~\"/proc.*|/sys.*|/dev.*\"} / node_filesystem_size_bytes{job=\"node-exporter\",fstype!~\"tmpfs|overlay\",mountpoint!~\"/proc.*|/sys.*|/dev.*\"}))",
-          "legendFormat": "Disk Usage - {{mountpoint}}",
+          "expr": "max by (instance) (100 * (1 - (node_filesystem_avail_bytes{job=\"node-exporter\",fstype!~\"tmpfs|overlay\",mountpoint!~\"/proc.*|/sys.*|/dev.*\"} / node_filesystem_size_bytes{job=\"node-exporter\",fstype!~\"tmpfs|overlay\",mountpoint!~\"/proc.*|/sys.*|/dev.*\"})))",
+          "legendFormat": "Disk Usage - {{instance}}",
           "refId": "A"
         }
       ],
@@ -136,7 +328,7 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "bytes/sec"
+          "unit": "Bps"
         },
         "overrides": []
       },
@@ -144,7 +336,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 12
       },
       "id": 4,
       "options": {
@@ -155,13 +347,13 @@
       },
       "targets": [
         {
-          "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\",device!=\"lo\"}[5m])",
-          "legendFormat": "RX - {{device}}",
+          "expr": "instance:network_receive_bytes_per_second",
+          "legendFormat": "Receive",
           "refId": "A"
         },
         {
-          "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\",device!=\"lo\"}[5m])",
-          "legendFormat": "TX - {{device}}",
+          "expr": "instance:network_transmit_bytes_per_second",
+          "legendFormat": "Transmit",
           "refId": "B"
         }
       ],
@@ -183,7 +375,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 20
       },
       "id": 5,
       "options": {
@@ -195,17 +387,17 @@
       "targets": [
         {
           "expr": "node_load1{job=\"node-exporter\"}",
-          "legendFormat": "1m Load - {{instance}}",
+          "legendFormat": "1 minute",
           "refId": "A"
         },
         {
           "expr": "node_load5{job=\"node-exporter\"}",
-          "legendFormat": "5m Load - {{instance}}",
+          "legendFormat": "5 minutes",
           "refId": "B"
         },
         {
           "expr": "node_load15{job=\"node-exporter\"}",
-          "legendFormat": "15m Load - {{instance}}",
+          "legendFormat": "15 minutes",
           "refId": "C"
         }
       ],
@@ -227,7 +419,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 20
       },
       "id": 6,
       "options": {
@@ -239,7 +431,7 @@
       "targets": [
         {
           "expr": "node_time_seconds{job=\"node-exporter\"} - node_boot_time_seconds{job=\"node-exporter\"}",
-          "legendFormat": "Uptime - {{instance}}",
+          "legendFormat": "Uptime",
           "refId": "A"
         }
       ],

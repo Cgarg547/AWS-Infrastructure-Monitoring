@@ -3,6 +3,25 @@ global:
 
 route:
   receiver: "default"
+  group_by:
+    - alertname
+    - severity
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+
+  routes:
+    - matchers:
+        - severity="critical"
+      receiver: "critical"
+
+    - matchers:
+        - severity="warning"
+      receiver: "warning"
 
 receivers:
   - name: "default"
+
+  - name: "critical"
+
+  - name: "warning"

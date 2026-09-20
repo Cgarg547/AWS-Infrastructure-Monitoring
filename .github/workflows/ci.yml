@@ -1,0 +1,151 @@
+name: Monitoring Stack CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Validate Monitoring Configuration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install YAML validator
+        run: pip install yamllint
+
+      - name: Validate YAML syntax
+        run: |
+          yamllint \
+            alertmanager/alertmanager.yml \
+            docker/docker-compose.yml \
+            docker/prometheus/prometheus.yml \
+            prometheus/alerts.yml \
+            prometheus/recording_rules.yml
+
+      - name: Install Prometheus tools
+        run: |
+          curl -L -o prometheus.tar.gz \
+            https://github.com/prometheus/prometheus/releases/download/v3.5.0/prometheus-3.5.0.linux-amd64.tar.gz
+          tar -xzf prometheus.tar.gz
+          sudo cp prometheus-3.5.0.linux-amd64/promtool /usr/local/bin/promtool
+
+      - name: Validate Prometheus configuration
+        run: |
+          promtool check config docker/prometheus/prometheus.yml
+
+      - name: Validate Prometheus alert rules
+        run: |
+          promtool check rules prometheus/alerts.yml
+
+      - name: Validate Prometheus recording rules
+        run: |
+          promtool check rules prometheus/recording_rules.yml
+
+      - name: Validate Docker Compose
+        run: |
+          docker compose -f docker/docker-compose.yml config
+
+      - name: Validate shell scripts
+        run: |
+          bash -n scripts/health-check.sh
+          bash -n scripts/install-monitoring.sh
+          bash -n node-exporter/install-node-exporter.sh
+          bash -n node-exporter/node_exporter.sh
+
+      - name: Validate Grafana dashboard JSON
+        run: |
+          python -m json.tool grafana/dashboards/aws-monitoring.json > /dev/null
+
+      - name: Validate Terraform
+        working-directory: terraform
+        run: |
+          terraform fmt -check
+          terraform init -backend=false
+          terraform validatename: Monitoring Stack CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Validate Monitoring Configuration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install YAML validator
+        run: pip install yamllint
+
+      - name: Validate YAML syntax
+        run: |
+          yamllint \
+            alertmanager/alertmanager.yml \
+            docker/docker-compose.yml \
+            docker/prometheus/prometheus.yml \
+            prometheus/alerts.yml \
+            prometheus/recording_rules.yml
+
+      - name: Install Prometheus tools
+        run: |
+          curl -L -o prometheus.tar.gz \
+            https://github.com/prometheus/prometheus/releases/download/v3.5.0/prometheus-3.5.0.linux-amd64.tar.gz
+          tar -xzf prometheus.tar.gz
+          sudo cp prometheus-3.5.0.linux-amd64/promtool /usr/local/bin/promtool
+
+      - name: Validate Prometheus configuration
+        run: |
+          promtool check config docker/prometheus/prometheus.yml
+
+      - name: Validate Prometheus alert rules
+        run: |
+          promtool check rules prometheus/alerts.yml
+
+      - name: Validate Prometheus recording rules
+        run: |
+          promtool check rules prometheus/recording_rules.yml
+
+      - name: Validate Docker Compose
+        run: |
+          docker compose -f docker/docker-compose.yml config
+
+      - name: Validate shell scripts
+        run: |
+          bash -n scripts/health-check.sh
+          bash -n scripts/install-monitoring.sh
+          bash -n node-exporter/install-node-exporter.sh
+          bash -n node-exporter/node_exporter.sh
+
+      - name: Validate Grafana dashboard JSON
+        run: |
+          python -m json.tool grafana/dashboards/aws-monitoring.json > /dev/null
+
+      - name: Validate Terraform
+        working-directory: terraform
+        run: |
+          terraform fmt -check
+          terraform init -backend=false
+          terraform validate

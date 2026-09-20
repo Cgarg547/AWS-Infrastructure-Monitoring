@@ -31,19 +31,21 @@ groups:
 
       - record: instance:disk_usage_percent
         expr: |
-          100 * (
-            1 - (
-              node_filesystem_avail_bytes{
-                job="node-exporter",
-                fstype!~"tmpfs|overlay",
-                mountpoint!~"/proc.*|/sys.*|/dev.*"
-              }
-              /
-              node_filesystem_size_bytes{
-                job="node-exporter",
-                fstype!~"tmpfs|overlay",
-                mountpoint!~"/proc.*|/sys.*|/dev.*"
-              }
+          max by (instance) (
+            100 * (
+              1 - (
+                node_filesystem_avail_bytes{
+                  job="node-exporter",
+                  fstype!~"tmpfs|overlay",
+                  mountpoint!~"/proc.*|/sys.*|/dev.*"
+                }
+                /
+                node_filesystem_size_bytes{
+                  job="node-exporter",
+                  fstype!~"tmpfs|overlay",
+                  mountpoint!~"/proc.*|/sys.*|/dev.*"
+                }
+              )
             )
           )
 
