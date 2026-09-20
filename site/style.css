@@ -328,3 +328,73 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* MONITORING DASHBOARD */
+
+.section-label {
+    color: #60a5fa;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+}
+
+.dashboard-description {
+    max-width: 750px;
+    color: #9ca3af;
+    margin-bottom: 40px;
+}
+
+.dashboard-image {
+    padding: 10px;
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 25px;
+}
+
+.dashboard-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.dashboard-subtitle {
+    font-size: 24px;
+    margin: 45px 0 20px;
+}
+
+.dashboard-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.dashboard-features div {
+    padding: 20px;
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 10px;
+}
+
+.dashboard-features strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #60a5fa;
+}
+
+.dashboard-features span {
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+@media (max-width: 700px) {
+
+    .dashboard-features {
+        grid-template-columns: 1fr;
+    }
+
+}
