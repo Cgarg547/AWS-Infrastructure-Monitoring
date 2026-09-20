@@ -41,9 +41,35 @@ jobs:
           tar -xzf prometheus.tar.gz
           sudo cp prometheus-3.5.0.linux-amd64/promtool /usr/local/bin/promtool
 
+      - name: Prepare Prometheus validation files
+        run: |
+          mkdir -p /tmp/prometheus-ci
+          cp docker/prometheus/prometheus.yml /tmp/prometheus-ci/prometheus.yml
+          cp prometheus/alerts.yml /tmp/prometheus-ci/alerts.yml
+          cp prometheus/recording_rules.yml /tmp/prometheus-ci/recording_rules.yml
+
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("/tmp/prometheus-ci/prometheus.yml")
+          text = path.read_text()
+
+          text = text.replace(
+              "/etc/prometheus/alerts.yml",
+              "/tmp/prometheus-ci/alerts.yml"
+          )
+
+          text = text.replace(
+              "/etc/prometheus/recording_rules.yml",
+              "/tmp/prometheus-ci/recording_rules.yml"
+          )
+
+          path.write_text(text)
+          PY
+
       - name: Validate Prometheus configuration
         run: |
-          promtool check config docker/prometheus/prometheus.yml
+          promtool check config /tmp/prometheus-ci/prometheus.yml
 
       - name: Validate Prometheus alert rules
         run: |
@@ -67,6 +93,9 @@ jobs:
       - name: Validate Grafana dashboard JSON
         run: |
           python -m json.tool grafana/dashboards/aws-monitoring.json > /dev/null
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
 
       - name: Validate Terraform
         working-directory: terraform
