@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AWS Infrastructure Monitoring</title>
+
+    <meta
+        name="description"
+        content="Production-style infrastructure monitoring using Prometheus, Grafana, Alertmanager, Docker, Terraform and GitHub Actions."
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="container nav-content">
+        <div class="logo">AWS Monitoring</div>
+
+        <nav>
+            <a href="#about">About</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#features">Features</a>
+            <a href="#technology">Technology</a>
+            <a href="#github">GitHub</a>
+        </nav>
+    </div>
+</header>
+
+
+<main>
+
+    <!-- HERO -->
+
+    <section class="hero">
+        <div class="container">
+
+            <div class="badge">
+                Infrastructure Monitoring Project
+            </div>
+
+            <h1>
+                AWS Infrastructure<br>
+                Monitoring Platform
+            </h1>
+
+            <p class="hero-text">
+                A production-style monitoring stack built with
+                Prometheus, Grafana, Alertmanager, Node Exporter,
+                Docker, Terraform and GitHub Actions.
+            </p>
+
+            <div class="buttons">
+                <a
+                    href="https://github.com/Cgarg547/AWS-Infrastructure-Monitoring"
+                    class="button primary"
+                    target="_blank"
+                >
+                    View on GitHub
+                </a>
+
+                <a href="#architecture" class="button secondary">
+                    View Architecture
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section id="about" class="section">
+        <div class="container">
+
+            <h2>About the Project</h2>
+
+            <p>
+                This project demonstrates an infrastructure monitoring
+                platform designed to collect system metrics, visualize
+                infrastructure health, evaluate alert conditions and
+                validate monitoring configuration through CI/CD.
+            </p>
+
+            <p>
+                The current implementation runs locally using Docker
+                Compose. Terraform configuration for AWS infrastructure
+                is included and validated, while actual AWS deployment
+                is intentionally excluded from the current version.
+            </p>
+
+        </div>
+    </section>
+
+
+    <!-- ARCHITECTURE -->
+
+    <section id="architecture" class="section dark">
+        <div class="container">
+
+            <h2>Architecture</h2>
+
+            <div class="architecture">
+
+                <div class="architecture-box">
+                    <span>01</span>
+                    <h3>Node Exporter</h3>
+                    <p>
+                        Collects CPU, memory, disk, network,
+                        load and uptime metrics.
+                    </p>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="architecture-box">
+                    <span>02</span>
+                    <h3>Prometheus</h3>
+                    <p>
+                        Scrapes metrics, evaluates recording
+                        rules and evaluates alerts.
+                    </p>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="architecture-box">
+                    <span>03</span>
+                    <h3>Alertmanager</h3>
+                    <p>
+                        Receives Prometheus alerts and routes
+                        them according to severity.
+                    </p>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="architecture-box">
+                    <span>04</span>
+                    <h3>Grafana</h3>
+                    <p>
+                        Provides dashboards for infrastructure
+                        health and performance.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- FEATURES -->
+
+    <section id="features" class="section">
+        <div class="container">
+
+            <h2>Monitoring Features</h2>
+
+            <div class="grid">
+
+                <div class="card">
+                    <div class="icon">CPU</div>
+                    <h3>CPU Monitoring</h3>
+                    <p>
+                        Tracks CPU utilization and detects
+                        sustained high CPU usage.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="icon">RAM</div>
+                    <h3>Memory Monitoring</h3>
+                    <p>
+                        Monitors memory utilization and
+                        identifies high memory usage.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="icon">DISK</div>
+                    <h3>Disk Monitoring</h3>
+                    <p>
+                        Tracks filesystem utilization and
+                        detects high disk usage.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="icon">NET</div>
+                    <h3>Network Monitoring</h3>
+                    <p>
+                        Tracks network receive and transmit
+                        traffic.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="icon">ALT</div>
+                    <h3>Alerting</h3>
+                    <p>
+                        Prometheus alerts are routed through
+                        Alertmanager based on severity.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="icon">CI</div>
+                    <h3>CI Validation</h3>
+                    <p>
+                        GitHub Actions validates configuration,
+                        rules, scripts, JSON and Terraform.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- TECHNOLOGY -->
+
+    <section id="technology" class="section dark">
+        <div class="container">
+
+            <h2>Technology Stack</h2>
+
+            <div class="tech-grid">
+
+                <div>Prometheus</div>
+                <div>Grafana</div>
+                <div>Alertmanager</div>
+                <div>Node Exporter</div>
+                <div>Docker</div>
+                <div>Docker Compose</div>
+                <div>Terraform</div>
+                <div>GitHub Actions</div>
+                <div>Linux</div>
+                <div>AWS</div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- PROJECT STATUS -->
+
+    <section class="section">
+        <div class="container">
+
+            <h2>Project Status</h2>
+
+            <div class="status-grid">
+
+                <div class="status">
+                    <strong>✓</strong>
+                    <span>Prometheus monitoring</span>
+                </div>
+
+                <div class="status">
+                    <strong>✓</strong>
+                    <span>Grafana dashboards</span>
+                </div>
+
+                <div class="status">
+                    <strong>✓</strong>
+                    <span>Alertmanager routing</span>
+                </div>
+
+                <div class="status">
+                    <strong>✓</strong>
+                    <span>Recording rules</span>
+                </div>
+
+                <div class="status">
+                    <strong>✓</strong>
+                    <span>Docker Compose</span>
+                </div>
+
+                <div class="status">
+                    <strong>✓</strong>
+                    <span>GitHub Actions CI</span>
+                </div>
+
+                <div class="status">
+                    <strong>✓</strong>
+                    <span>Terraform validation</span>
+                </div>
+
+                <div class="status">
+                    <strong>✓</strong>
+                    <span>Health checks</span>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- GITHUB -->
+
+    <section id="github" class="github-section">
+        <div class="container">
+
+            <h2>Explore the Project</h2>
+
+            <p>
+                View the complete source code, monitoring
+                configuration, Terraform files and CI/CD workflow
+                on GitHub.
+            </p>
+
+            <a
+                href="https://github.com/Cgarg547/AWS-Infrastructure-Monitoring"
+                class="button primary"
+                target="_blank"
+            >
+                Open GitHub Repository
+            </a>
+
+        </div>
+    </section>
+
+</main>
+
+
+<footer>
+    <div class="container">
+        <p>
+            AWS Infrastructure Monitoring · Built with Prometheus,
+            Grafana, Docker and Terraform
+        </p>
+    </div>
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
